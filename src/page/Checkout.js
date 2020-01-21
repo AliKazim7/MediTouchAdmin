@@ -13,6 +13,7 @@ import { Actions } from 'react-native-router-flux';
 import Colors from '../Colors';
 import Text from '../component/Text';
 import Navbar from '../component/Navbar';
+import Firebase from '../Firebase/firebase';
 
 export default class Checkout extends Component {
   constructor(props) {
@@ -20,26 +21,36 @@ export default class Checkout extends Component {
       this.state = {
         cartItems: [],
         total: 0,
-        card: true,
-        paypal: false,
-        name: '',
-        email: '',
-        phone: '',
-        country: '',
-        address: '',
-        city: '',
-        postcode: '',
-        note: ''
+        medicineName:'',
+        orderStatus:'',
+        orderID:'',
+        deliveryCharges:'',
+        deliveryTime:'',
+        username:'',
+        balance:0
       };
   }
 
   componentWillMount() {
-    this.setState({cartItems: this.props.cartItems});
-    this.props.cartItems.map((item) => {
-      var total = 0;
-      total += parseFloat(item.price) * parseInt(item.quantity);
-      this.setState({total: total});
-    });
+    console.log("data items", this.props)
+    this.setState({
+      medicineName: this.props.medicineName,
+      orderStatus: this.props.orderStatus,
+      username: this.props.userID,
+      orderID: this.props.orderID,
+      deliveryTime: this.props.deliveryTime,
+    })
+    if(this.props.balance){
+      this.setState({
+        balance: this.props.balance
+      })
+    }
+    // this.setState({cartItems: this.props.cartItems});
+    // this.props.cartItems.map((item) => {
+    //   var total = 0;
+    //   total += parseFloat(item.price) * parseInt(item.quantity);
+    //   this.setState({total: total});
+    // });
   }
 
   render() {
@@ -59,73 +70,40 @@ export default class Checkout extends Component {
     );
     return(
       <Container style={{backgroundColor: '#fdfdfd'}}>
-        <Navbar left={left} right={right} title="CHECKOUT" />
+        <Navbar left={left} title="CHANGE STATUS" />
         <Content padder>
-          <TouchableHighlight onPress={() => Actions.login()}>
-            <View style={{flex: 1, alignItems: 'center', backgroundColor: '#6fafc4', paddingTop: 20, paddingBottom: 20}}>
-                <Icon name="ios-warning" style={{color: 'rgba(253, 253, 253, 0.9)', marginRight: 20, position: 'absolute', left: 11, top: 15, borderRightWidth: 1, borderColor: 'rgba(253, 253, 253, 0.2)', paddingRight: 10}}/>
-                <Text style={{color: '#fdfdfd'}}>Returning customer ? click here to login</Text>
-            </View>
-          </TouchableHighlight>
           <View>
             <Text style={{marginTop: 15, fontSize: 18}}>Shipping information</Text>
             <Item regular style={{marginTop: 7}}>
-                <Input placeholder='Name' onChangeText={(text) => this.setState({name: text})} placeholderTextColor="#687373" />
+                <Input placeholder='User Name' value={this.state.username} onChangeText={(text) => this.setState({username: text})} placeholderTextColor="#687373" />
             </Item>
             <Item regular style={{marginTop: 7}}>
-                <Input placeholder='Email' onChangeText={(text) => this.setState({email: text})} placeholderTextColor="#687373" />
+                <Input placeholder='Order Status' value={this.state.orderStatus}  placeholderTextColor="#687373" />
             </Item>
             <Item regular style={{marginTop: 7}}>
-                <Input placeholder='Phone' onChangeText={(text) => this.setState({phone: text})} placeholderTextColor="#687373" />
+                <Input placeholder='Delivery Time' value={this.state.deliveryTime} onChangeText={(text) => this.setState({deliveryTime: text})} placeholderTextColor="#687373" />
             </Item>
             <Item regular style={{marginTop: 7}}>
-                <Input placeholder='Country' onChangeText={(text) => this.setState({country: text})} placeholderTextColor="#687373" />
+                <Input placeholder='Medicine Name' value={this.state.medicineName} onChangeText={(text) => this.setState({medicineName: text})} placeholderTextColor="#687373" />
             </Item>
             <Item regular style={{marginTop: 7}}>
-                <Input placeholder='Address' onChangeText={(text) => this.setState({address: text})} placeholderTextColor="#687373" />
+                <Input placeholder='Delivery Charges' onChangeText={(text) => this.setState({deliveryCharges: text})} placeholderTextColor="#687373" />
             </Item>
             <Item regular style={{marginTop: 7}}>
-                <Input placeholder='City' onChangeText={(text) => this.setState({city: text})} placeholderTextColor="#687373" />
+                <Input placeholder='Total Balance' onChangeText={(text) => this.setState({balance: text})} placeholderTextColor="#687373" />
             </Item>
-            <Item regular style={{marginTop: 7}}>
-                <Input placeholder='Postcode' onChangeText={(text) => this.setState({postcode: text})} placeholderTextColor="#687373" />
-            </Item>
-            <Item regular style={{marginTop: 7}}>
-                <Input placeholder='Note' onChangeText={(text) => this.setState({note: text})} placeholderTextColor="#687373" />
-            </Item>
-          </View>
-          <Text style={{marginTop: 15, fontSize: 18}}>Your order</Text>
+            </View>
           <View style={styles.invoice}>
-            <List>
-                {this.renderItems()}
-            </List>
+            
             <View style={styles.line} />
             <Grid style={{paddingLeft: 10, paddingRight: 10, marginTop: 7}}>
               <Col>
                 <Text style={{fontSize: 18, fontStyle: 'italic'}}>Total</Text>
               </Col>
               <Col>
-                <Text style={{textAlign: 'right', fontSize: 18, fontWeight: 'bold'}}>{this.state.total+"$"}</Text>
+                <Text style={{textAlign: 'right', fontSize: 18, fontWeight: 'bold'}}>{this.state.balance+"Rs"}</Text>
               </Col>
             </Grid>
-          </View>
-          <View>
-            <Text style={{marginTop: 15, marginBottom: 7, fontSize: 18}}>Payement method</Text>
-            <ListItem style={{borderWidth: 1, borderColor: 'rgba(149, 165, 166, 0.3)', paddingLeft: 10, marginLeft: 0}}>
-              <Text>Pay with card</Text>
-              <FAIcon name="cc-mastercard" size={20} color="#c0392b" style={{marginLeft: 7}} />
-              <FAIcon name="cc-visa" size={20} color="#2980b9" style={{marginLeft: 2}} />
-              <Right>
-                <Radio selected={this.state.card} onPress={() => this.setState({card: true, paypal: false})} />
-              </Right>
-            </ListItem>
-            <ListItem style={{borderWidth: 1, borderColor: 'rgba(149, 165, 166, 0.3)', paddingLeft: 10, marginLeft: 0, borderTopWidth: 0}}>
-              <Text>Pay with Paypal</Text>
-              <FAIcon name="cc-paypal" size={20} color="#34495e" style={{marginLeft: 7}} />
-              <Right>
-                <Radio selected={this.state.paypal} onPress={() => this.setState({card: false, paypal: true})} />
-              </Right>
-            </ListItem>
           </View>
           <View style={{marginTop: 10, marginBottom: 10, paddingBottom: 7}}>
             <Button onPress={() => this.checkout()} style={{backgroundColor: Colors.navbarBackgroundColor}} block iconLeft>
@@ -164,8 +142,31 @@ export default class Checkout extends Component {
   }
 
   checkout() {
-    console.log(this.state);
-    alert("Check the log");
+    // var db = Firebase.firestore()
+    console.log('data values', this.state.orderStatus, this.state.orderID, this.state.balance, this.state.username, this.state.deliveryCharges, this.state.deliveryTime)
+    if(this.state.orderStatus === 'Pending'){
+      let username = this.state.username;
+      let deliveryCharges = this.state.deliveryCharges;
+      let deliveryTime = this.state.deliveryTime;
+      let orderStatus = this.state.orderStatus;
+      let orderID = this.state.orderID
+      let balance = this.state.balance
+      var db = Firebase.firestore()
+    db.collection('orderDetail').where('orderID','==',orderID)
+        .get()
+        .then(function(querySnapshot){
+            querySnapshot.forEach(function(doc){
+                db.collection('orderDetail').doc(doc.id).update({
+                    orderStatus: 'Approved',
+                    totalBalance: balance,
+                    deliveryTime: deliveryTime,
+                    deliveryCharges: deliveryCharges,
+                    userID: username
+
+                }).then(resp => {Actions.orderDetails()})
+            })
+        })
+    }
   }
 
 }

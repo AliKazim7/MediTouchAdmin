@@ -24,7 +24,7 @@ export default class OrderDetail extends Component {
     this.state = {
       email: '',
       username:'',
-      medicineName:'',
+      name:'',
       isVisible: false,
       result:[],
       orderID:'',
@@ -52,7 +52,7 @@ export default class OrderDetail extends Component {
             array.push({
                 orderStatus:data[i].orderStatus,
                 orderID:data[i].orderID,
-                medicineName:data[i].medicineName,
+                name:data[i].medicineName,
                 userID: data[i].userID,
                 deliveryTime:data[i].deliveryTime
             })
@@ -101,7 +101,7 @@ export default class OrderDetail extends Component {
                     <Card>
                     <CardItem header>
                        <Body>
-                       <Text>{item.medicineName}</Text>
+                       <Text>{item.name}</Text>
                        <Text style={{marginTop:20}}>{item.orderStatus}</Text>
                        <Text style={{marginTop:20}}>{item.userID}</Text>
                        <Text style={{marginTop:20}}>{item.deliveryTime}</Text>
@@ -109,7 +109,7 @@ export default class OrderDetail extends Component {
                        <Icon name='ios-trash' style={{color:'red'}} onPress={item.orderStatus === 'Approved' ? '' : () =>  this.deleteData(item.orderID)} />
                     </CardItem>
                     <CardItem footer>
-                        <Button success style={{marginLeft:'30%'}} large light onPress={() => Actions.checkout(item)}>
+                        <Button success style={{marginLeft:'30%'}} large light onPress={() => this.changeStatus(item.orderID)}>
                             <Text>Change Status</Text>
                         </Button>
                     </CardItem>

@@ -23,7 +23,7 @@ import MedicineList from './page/MedicineList'
 import AddMedicine from './page/AddMedicine'
 import EditMedicine from './page/EditMedicine'
 import OrderDetails from './page/OrderDetail'
-// import Checkout from './page/Checkout';
+import Checkout from './page/Checkout';
 
 export default class Main extends Component {
   componentWillMount = () => {
@@ -45,6 +45,7 @@ export default class Main extends Component {
             <Scene key="orderDetails" component={OrderDetails} hideNavBar />
             <Scene key="users" component={Users} hideNavBar />
             <Scene key="initialPage" component={initialPage} hideNavBar />
+            <Scene key="checkout" component={Checkout} hideNavBar />
           </Scene>
         </Router>
       </Root>
