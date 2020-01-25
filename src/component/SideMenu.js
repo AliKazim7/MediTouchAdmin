@@ -80,6 +80,32 @@ export default class SideMenu extends Component {
                   <Icon name="ios-arrow-forward" />
                 </Right>
               </ListItem>
+              <ListItem
+                icon
+                key={1}
+                button={true}
+                onPress={() => this.users()}
+              >
+                <Body>
+                  <Text>Users</Text>
+                </Body>
+                <Right>
+                  <Icon name="ios-arrow-forward" />
+                </Right>
+              </ListItem>
+              <ListItem
+                icon
+                key={1}
+                button={true}
+                onPress={() => this.orderDetails()}
+              >
+                <Body>
+                  <Text>Orders</Text>
+                </Body>
+                <Right>
+                  <Icon name="ios-arrow-forward" />
+                </Right>
+              </ListItem>
               {
                 // this.renderMenuItems()
               }

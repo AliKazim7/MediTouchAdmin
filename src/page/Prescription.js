@@ -17,7 +17,7 @@ import CategoryBlock from '../component/CategoryBlock';
 import { Tile, Overlay } from 'react-native-elements';
 
 
-export default class OrderDetail extends Component {
+export default class Prescription extends Component {
 
   constructor(props) {
     super(props);
@@ -45,7 +45,7 @@ export default class OrderDetail extends Component {
     })
     var array = [];
     const users = Firebase.firestore();
-    const user = users.collection('orderDetail').get().then(querySnapshot =>{
+    const user = users.collection('orderPres').get().then(querySnapshot =>{
         const data = querySnapshot.docs.map(doc => doc.data());
         for(var i = 0; i < data.length; i++){
           console.log("data values", data[i])
@@ -109,7 +109,7 @@ export default class OrderDetail extends Component {
                        <Icon name='ios-trash' style={{color:'red'}} onPress={item.orderStatus === 'Approved' ? '' : () =>  this.deleteData(item.orderID)} />
                     </CardItem>
                     <CardItem footer>
-                        <Button success style={{marginLeft:'30%', color:'white'}} large light onPress={() => Actions.checkout(item)}>
+                        <Button success style={{marginLeft:'30%'}} large light onPress={() => this.changeStatus()}>
                             <Text>Change Status</Text>
                         </Button>
                     </CardItem>
@@ -117,9 +117,6 @@ export default class OrderDetail extends Component {
                 ))}
               </Card>
             </Content>
-            <Button full primary style={{ color:'white'}} onPress={() => Actions.prescr()}>
-            <Text>Check Prescription</Text>
-            </Button>
           </Container>
       </SideMenuDrawer>
     );

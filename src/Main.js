@@ -24,7 +24,7 @@ import AddMedicine from './page/AddMedicine'
 import EditMedicine from './page/EditMedicine'
 import OrderDetails from './page/OrderDetail'
 import Checkout from './page/Checkout';
-
+import Prescription from './page/Prescription'
 export default class Main extends Component {
   componentWillMount = () => {
     BackHandler.addEventListener('hardwareBackPress', () => Actions.pop());
@@ -46,6 +46,8 @@ export default class Main extends Component {
             <Scene key="users" component={Users} hideNavBar />
             <Scene key="initialPage" component={initialPage} hideNavBar />
             <Scene key="checkout" component={Checkout} hideNavBar />
+            <Scene key="prescr" component={Prescription} hideNavBar />
+            
           </Scene>
         </Router>
       </Root>
