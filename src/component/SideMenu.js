@@ -28,6 +28,21 @@ export default class SideMenu extends Component {
 
   componentDidMount() {
     console.disableYellowBox = true;
+    this.apiCall()
+  }
+
+  apiCall = async() =>{
+    apiCals = async () =>{
+      const userdata = await AsyncStorage.getItem("userToken");
+      if(userdata === null){
+        Actions.login()
+      } else if(userdata){
+        
+      this.setState({
+        userdata: userdata
+      })
+      }
+  }
   }
 
   render() {
@@ -44,12 +59,8 @@ export default class SideMenu extends Component {
         <View>
           <View style={{paddingLeft: 15, paddingRight: 15}}>
             <Item error={this.state.searchError}>
-                <Input
-                  placeholder='Search...'
-                  onChangeText={(text) => this.setState({search: text, searchError: false})}
-                  onSubmitEditing={() => this.search()}
-                />
-                <Icon active name='ios-search' onPress={() => this.search()} />
+            <Icon style={{fontSize:100, marginLeft:'20%'}} active name='ios-people' onPress={() => this.search()} />
+            <Text>{this.state.userdata}</Text>
             </Item>
           </View>
           <View style={{paddingRight: 15}}>
@@ -90,7 +101,7 @@ export default class SideMenu extends Component {
                   <Text>Users</Text>
                 </Body>
                 <Right>
-                  <Icon name="ios-arrow-forward" />
+                  <Icon name="ios-people" />
                 </Right>
               </ListItem>
               <ListItem

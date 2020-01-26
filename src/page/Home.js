@@ -85,6 +85,7 @@ export default class Home extends Component {
       <Container style={{flex:1,backgroundColor:'rgba(0,0,0,0.3)'}}>
       <SideMenuDrawer ref={(ref) => this._sideMenuDrawer = ref}>
       
+      <Navbar left={left}  title="MediTouch Admin" />
       <Text style={{fontSize:30, color:'white', marginTop:'5%', marginLeft:'10%', marginBottom:'10%'}}>Buy Medicines Online</Text>
       <Text style={{fontSize:20, color:'white',marginLeft:'30%',marginBottom:'5%' }}>Search Medicine</Text>
       <Text style={{fontSize:20, color:'white', marginLeft:'30%', marginTop:'5%', marginBottom:'5%'}}>Upload Prescription</Text>
@@ -134,14 +135,9 @@ export default class Home extends Component {
           }
         }
     />    
-      
     <Body>
-      <Icon onPress={ () => Actions.document()} style={{fontSize: 100 }} name="camera" />
-      <Text style={{fontSize:20}} >Take Picture</Text>
-    </Body>
-    <Body>
-      <Icon onPress={ () => Actions.document({userdata: this.state.userdata})} style={{fontSize: 100 }} name="folder" />
-      <Text style={{fontSize:20}} >Choose File</Text>
+      <Icon onPress={ () => Actions.medicineList({userdata: this.state.userdata})} style={{fontSize: 100 }} name="folder" />
+      <Text style={{fontSize:20}} >Medicines</Text>
     </Body>
     <Body>
       <Icon onPress={ () => Actions.orderDetails({userdata: this.state.userdata})} style={{fontSize: 100 }} name="ios-cart" />
