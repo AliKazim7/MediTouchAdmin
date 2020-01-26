@@ -18,6 +18,7 @@ import initialPage from './page/initialPage'
 // import ImageGallery from './page/ImageGallery';
 import Login from './page/Login';
 import Signup from './page/Signup';
+import DocumentPicker from './page/DocumentPicker'
 import Users from './page/Users';
 import MedicineList from './page/MedicineList'
 import AddMedicine from './page/AddMedicine'
@@ -38,6 +39,7 @@ export default class Main extends Component {
           <Scene key="root">
             <Scene initial key="home" component={Home} hideNavBar />
             <Scene key="login" component={Login} hideNavBar />
+            <Scene key="document" component={DocumentPicker} hideNavBar />
             <Scene key="signup" component={Signup} hideNavBar />
             <Scene key="medicineList" component={MedicineList} hideNavBar />
             <Scene key="Addmedicine" component={AddMedicine} hideNavBar />

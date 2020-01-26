@@ -84,7 +84,7 @@ export default class SideMenu extends Component {
                 icon
                 key={1}
                 button={true}
-                onPress={() => this.users()}
+                onPress={() => Actions.users()}
               >
                 <Body>
                   <Text>Users</Text>
@@ -97,7 +97,7 @@ export default class SideMenu extends Component {
                 icon
                 key={1}
                 button={true}
-                onPress={() => this.orderDetails()}
+                onPress={() => Actions.orderDetails()}
               >
                 <Body>
                   <Text>Orders</Text>

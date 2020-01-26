@@ -5,10 +5,11 @@
 // React native and others libraries imports
 import React, { Component } from 'react';
 import { Image, AsyncStorage } from 'react-native';
-import { Container, Content, View, Button, Left, Right, Icon, Card, CardItem, cardBody } from 'native-base';
+import { Container, Content, View, Button, Left, Right, Icon, Card, CardItem, cardBody, Body } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import Firebase from '../Firebase/firebase'
 // Our custom files and classes import
+import SearchableDropdown from 'react-native-searchable-dropdown';
 import Text from '../component/Text';
 import Navbar from '../component/Navbar';
 import SideMenu from '../component/SideMenu';
@@ -81,41 +82,74 @@ export default class Home extends Component {
       </Right>
     );
     return(
+      <Container style={{flex:1,backgroundColor:'rgba(0,0,0,0.3)'}}>
       <SideMenuDrawer ref={(ref) => this._sideMenuDrawer = ref}>
-          <Container>
-            <Navbar left={left}  title="MediTouch Admin" />
-            <Content>
-              <Tile
-                featured
-                onPress={() => Actions.medicineList()}
-                title="Medicines"
-                imageSrc={require('../component/pills.png')}
-                imageContainerStyle={{
-                  width: '100%',
-                  height:'100%'
-                }}
-                containerStyle={{
-                  borderColor:'1px solid black'
-                }}
-              />
-              <Tile
-                onPress={() => Actions.users()}
-                featured
-                title="Users"
-                titleStyle={{color:'black'}}
-                imageSrc={require('../component/user.jpg')}
-              />
-              <Tile
-                onPress={() => Actions.orderDetails()}
-                featured
-                title="Pending Orders"
-                titleStyle={{color:'white'}}
-                // imageContainerStyle={{margin:10, height:250}}
-                imageSrc={require('../component/pendingimage.jpg')}
-              />
-            </Content>
-          </Container>
+      
+      <Text style={{fontSize:30, color:'white', marginTop:'5%', marginLeft:'10%', marginBottom:'10%'}}>Buy Medicines Online</Text>
+      <Text style={{fontSize:20, color:'white',marginLeft:'30%',marginBottom:'5%' }}>Search Medicine</Text>
+      <Text style={{fontSize:20, color:'white', marginLeft:'30%', marginTop:'5%', marginBottom:'5%'}}>Upload Prescription</Text>
+
+      <SearchableDropdown
+      onItemSelect={(item) => {
+        this.setState({ selectedItems: item, afterSelect: true });
+      }}
+        containerStyle={{ padding: 5 }}
+        onRemoveItem={(item, index) => {
+          const items = this.state.selectedItems.filter((sitem) => sitem.id !== item.id);
+          this.setState({ selectedItems: items });
+        }}
+        itemStyle={{
+          padding: 10,
+          marginTop: 2,
+          backgroundColor: '#ddd',
+          borderColor: '#bbb',
+          borderWidth: 1,
+          borderRadius: 5,
+        }}
+        itemTextStyle={{ color: '#222' }}
+        itemsContainerStyle={{ maxHeight: 140 }}
+        items={result}
+        defaultIndex={2}
+        resetValue={false}
+        textInputProps={
+          {
+            placeholder: "placeholder",
+            underlineColorAndroid: "transparent",
+            style: {
+                padding: 12,
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 5,
+            },
+            onTextChange: text => {
+              this.setState({
+                selectedItems: text
+              })
+            }
+          }
+        }
+        listProps={
+          {
+            nestedScrollEnabled: true,
+          }
+        }
+    />    
+      
+    <Body>
+      <Icon onPress={ () => Actions.document()} style={{fontSize: 100 }} name="camera" />
+      <Text style={{fontSize:20}} >Take Picture</Text>
+    </Body>
+    <Body>
+      <Icon onPress={ () => Actions.document({userdata: this.state.userdata})} style={{fontSize: 100 }} name="folder" />
+      <Text style={{fontSize:20}} >Choose File</Text>
+    </Body>
+    <Body>
+      <Icon onPress={ () => Actions.orderDetails({userdata: this.state.userdata})} style={{fontSize: 100 }} name="ios-cart" />
+      <Text style={{fontSize:20}} >Order Details</Text>
+    </Body>
       </SideMenuDrawer>
+      
+      </Container>
     );
   }
 
